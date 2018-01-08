@@ -49,7 +49,8 @@ public class PlaceAdapter extends ArrayAdapter<Place> {
 
         ButterKnife.bind(this, actualView);
 
-        if(Integer.toString(position).contains("0"))
+        String nomRue = getItem(position).getStreet();
+        if(nomRue.contains("1"))
             image.setImageResource(R.drawable.road);
         else
             image.setImageResource(R.drawable.house);
