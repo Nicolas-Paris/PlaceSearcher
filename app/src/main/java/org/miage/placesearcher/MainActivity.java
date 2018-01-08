@@ -3,6 +3,8 @@ package org.miage.placesearcher;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -12,16 +14,22 @@ import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
-    @BindView(R.id.hello)  TextView hello;
-    @BindView(R.id.ratingBar) RatingBar ratingBar;
+    @BindView(R.id.liste) ListView mListeView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //Utilisation de la librairie ButterKnife
         ButterKnife.bind(this);
+
+        String[] listItem = new String[49];
+        //Création des items
+        for(int i = 0; i < 49; i++) {
+            listItem[i] = "item" + (i+1);
+        }
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, listItem);
+
+        mListeView.setAdapter(adapter);
 
     }
 
@@ -29,12 +37,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        ratingBar.setProgress(ratingBar.getProgress() + 1);
-    }
-
-    @OnClick(R.id.hello)
-    public void clickedOnTextField() {
-            ratingBar.setProgress(ratingBar.getProgress() - 1);
     }
 
 }
