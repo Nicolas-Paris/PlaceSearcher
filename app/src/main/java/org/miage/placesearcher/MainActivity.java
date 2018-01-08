@@ -1,12 +1,17 @@
 package org.miage.placesearcher;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,14 +27,21 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        String[] listItem = new String[49];
+        List<Place> listItem = new ArrayList<Place>();
         //Création des items
-        for(int i = 0; i < 49; i++) {
-            listItem[i] = "item" + (i+1);
+        for(int i = 0; i < 50; i++) {
+            listItem.add(new Place("Street" + (i+1), "44000", "Nantes"));
         }
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, listItem);
+        ArrayAdapter adapter = new PlaceAdapter(this, listItem);
 
         mListeView.setAdapter(adapter);
+        mListeView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent seePlace = new Intent(MainActivity.this, PlaceActivity.class);
+                startActivity(seePlace);
+            }
+        });
 
     }
 
@@ -38,5 +50,6 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
     }
+
 
 }
