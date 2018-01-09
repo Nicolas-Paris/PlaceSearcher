@@ -1,25 +1,27 @@
 package org.miage.placesearcher;
 
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.RatingBar;
-import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.liste) ListView mListeView;
+
+    MediaPlayer player;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,20 @@ public class MainActivity extends AppCompatActivity {
         mListeView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                // Méthode qui joue du son quand on clic sur un item
+                AssetFileDescriptor son = null;
+                try {
+                    son = getAssets().openFd("click.mp3");
+                    player = new MediaPlayer();
+                    player.setDataSource(son.getFileDescriptor(), son.getStartOffset(), son.getLength());
+                    player.prepare();
+                    player.start();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
                 Intent seePlace = new Intent(MainActivity.this, PlaceActivity.class);
                 startActivity(seePlace);
             }
