@@ -55,7 +55,8 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 Intent seePlace = new Intent(MainActivity.this, PlaceActivity.class);
-                seePlace.putExtra("street", listItem.get(position).getStreet());
+                Place place = (Place) parent.getItemAtPosition(position);
+                seePlace.putExtra("street", place.getStreet());
                 startActivity(seePlace);
             }
         });
