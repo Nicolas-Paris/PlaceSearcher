@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        List<Place> listItem = new ArrayList<Place>();
+        final List<Place> listItem = new ArrayList<Place>();
         //Création des items
         for(int i = 0; i < 50; i++) {
             listItem.add(new Place("Street" + (i+1), "44000", "Nantes"));
@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 Intent seePlace = new Intent(MainActivity.this, PlaceActivity.class);
+                seePlace.putExtra("street", listItem.get(position).getStreet());
                 startActivity(seePlace);
             }
         });

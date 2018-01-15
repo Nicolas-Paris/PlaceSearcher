@@ -22,6 +22,8 @@ public class PlaceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.place_activity);
         ButterKnife.bind(this);
+
+        textView.setText(getIntent().getStringExtra("street"));
     }
 
     @OnClick(R.id.textView)
