@@ -12,6 +12,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -80,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
                         .build();
                 try {
                     Response response = okHttpClient.newCall(request).execute();
+                    Log.e("Test", response.body().string());
                     return response;
                 } catch(IOException e) {
                     Log.e("ERROR BITCH", e.getMessage());
@@ -91,7 +96,21 @@ public class MainActivity extends AppCompatActivity {
             protected void onPostExecute(Response response) {
                 super.onPostExecute(response);
 
-                Log.d("Test", response.body().toString());
+
+                /*try {
+                    JSONObject jsonObject = new JSONObject(response.body().string());
+                    JSONArray jsonPlaces = jsonObject.getJSONArray("feature");
+                    for(int i = 0; i < jsonPlace.length(); i++) {
+                        JSONObject jsonPlace = jsonPlaces.getJSONObject(i);
+                        String label = jsonPlace.getJSONObject("properties").getString("label");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } */
+
+
             }
         };
 
