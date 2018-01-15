@@ -12,6 +12,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.squareup.otto.Subscribe;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -75,49 +77,24 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-        AsyncTask<String, Void, Response> asyncTask = new AsyncTask<String, Void, Response>() {
-            @Override
-            protected Response doInBackground(String... strings) {
-                OkHttpClient okHttpClient = new OkHttpClient();
-                Request request = new Request.Builder().url(strings[0])
-                        .build();
-                try {
-                    Response response = okHttpClient.newCall(request).execute();
-                    Log.e("Test", response.body().string());
-                    return response;
-                } catch(IOException e) {
-                    Log.e("ERROR BITCH", e.getMessage());
-                }
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Response response) {
-                super.onPostExecute(response);
-
-
-                /*try {
-                    JSONObject jsonObject = new JSONObject(response.body().string());
-                    JSONArray jsonPlaces = jsonObject.getJSONArray("feature");
-                    for(int i = 0; i < jsonPlace.length(); i++) {
-                        JSONObject jsonPlace = jsonPlaces.getJSONObject(i);
-                        String label = jsonPlace.getJSONObject("properties").getString("label");
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } */
-
-
-            }
-        };
-
-        asyncTask.execute("http://api.adresse.data.gouv.fr/search/?q=Place%20du%20commerce");
-
-
+        PlaceSearchService.INSTANCE.searchPlacesFromAdress("Place du Commerce");
+        EventBusManager.BUS.register(this);
     }
 
+    @Override
+    protected void onPause() {
+        EventBusManager.BUS.unregister(this);
+        super.onPause();
+    }
 
+    @Subscribe
+    public void searchResult(SearchResultEvent event){
+        final List<Place> listItem = new ArrayList<Place>();
+        //Création des items
+        for(Place place : event.getPlaces()) {
+            listItem.add(place);
+        }
+        ArrayAdapter adapter = new PlaceAdapter(this, listItem);
+        mListeView.setAdapter(adapter);
+    }
 }

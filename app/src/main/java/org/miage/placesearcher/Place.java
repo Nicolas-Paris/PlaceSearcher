@@ -18,6 +18,14 @@ public class Place {
         this.city = city;
     }
 
+    public Place(double latitude, double longitude, String street, String zipCode, String city) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.street = street;
+        this.zipCode = zipCode;
+        this.city = city;
+    }
+
     public double getLatitude() {
         return latitude;
     }
